@@ -8,6 +8,7 @@ class StockCLI
     puts "Dow: #{index_prices[0][0]}: #{index_prices[0][1]}"
     puts "Nasdaq: #{index_prices[1][0]}: #{index_prices[1][1]}"
     puts "S+P: #{index_prices[2][0]}: #{index_prices[2][1]}"
+
   end
 
   def call    
@@ -33,6 +34,9 @@ class StockCLI
     scrape = Scraper.new(input)
 
     stock = StockQuote::Stock.quote("#{input}")
+    system("clear")
+    system("cowsay #{input.upcase}")
+    puts "--------------------------------------"
     puts "Current Price: #{scrape.current_price}"
     puts "Change: #{stock.change} (#{stock.changein_percent})"  
     puts "Prev. Close: #{stock.previous_close}. Open: #{stock.open}"
@@ -44,18 +48,26 @@ class StockCLI
     puts "P/E Ratio: #{stock.pe_ratio}. Earnings per share: #{stock.earnings_share}"
     stock.dividend_share != 0.0 ? (puts "Div. and Yield: #{stock.dividend_share} (#{stock.dividend_yield}%)") : (puts "No Dividend")
     puts "Similiar companies: #{scrape.competition}"
+    puts ""
 
     scrape.get_headlines.each.with_index(1) do |article, i|
       puts "#{i}. #{article[0]}: #{article[2]}"
     end
+    puts ""
 
-    puts "Enter a number to open an article in your browser."
-    selection = gets.strip.to_i - 1
+    end_of_stock
     
-    open_page(scrape.get_headlines[selection][1])
   end
 
- 
+
+  def end_of_stock
+    puts "Enter an article's number to view that article or type 'menu' to return to the main menu."
+  end
+
+    # puts "Enter a number to open an article in your browser."
+    # selection = gets.strip.to_i - 1
+    
+    # open_page(scrape.get_headlines[selection][1])
 
   def stock_menu(stock)
     puts "Enter a number to select:"

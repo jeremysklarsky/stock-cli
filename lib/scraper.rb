@@ -19,23 +19,17 @@ class Scraper
     @stock_doc.search("td.yfnc_tabledata1")[6].text
   end
 
-  # def people_also_viewed
 
-  #   @stock_doc.search("div.yui-g yfi_related_tickers a").collect do |competitor|
-
-  #     competitor.text
-  #   end
-  # end
 
   def competition
-    @competition_html = open("https://finance.yahoo.com/q/co?s=#{ticker}+Competitors")
+    @competition_html = open("https://finance.yahoo.com/q/co?s=#{@ticker}+Competitors")
     @competition_doc = Nokogiri::HTML(@competition_html)
     result = []
     @competition_doc.search("th.yfnc_tablehead1").collect do |company|
       case company.text
       when ""
         nil
-      when ticker
+      when ticker.upcase
         nil
       when "Industry"
         nil
@@ -43,7 +37,7 @@ class Scraper
         result << company.text
       end
     end
-    result.join(', ')
+    result[0..2].join(', ')
   end
 
   def get_headlines
@@ -55,7 +49,7 @@ class Scraper
                         article.children.last.text]
 
     end
-    headline_array
+    headline_array[0..9]
 
   end
  
