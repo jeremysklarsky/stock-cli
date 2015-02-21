@@ -1,7 +1,7 @@
 class StockCLI
   
   def initialize
-    puts "Welcome to Stocks"
+    puts "Welcome to the Stockvestigator 3000"
     puts "Dow: #{index_prices[0][0]}: #{index_prices[0][1]}"
     puts "Nasdaq: #{index_prices[1][0]}: #{index_prices[1][1]}"
     puts "S+P: #{index_prices[2][0]}: #{index_prices[2][1]}"
