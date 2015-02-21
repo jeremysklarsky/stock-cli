@@ -9,7 +9,7 @@ class StockCLI
 
   def menu    
     puts "Enter a stock ticker symbol or type exit to close the program."
-    input = gets.strip
+    input = gets.strip.downcase
     if input.downcase != "exit"
       display_stock_info(input)
     end
