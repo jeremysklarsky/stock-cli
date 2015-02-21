@@ -1,0 +1,40 @@
+1. stock gem [x]
+2. Headline news [http://finance.yahoo.com/q/h?s=AAPL+Headlines]
+3. 
+
+Priority 
+1. Make it work for a specific stock 
+  a. information through Gem
+  b. headline scrape through nokogiri for news
+  c. show company website link
+  d. show similiar stocks
+
+Additional add-on if time allots:
+1. Spark chart (30 day using gem)
+2. Quotes of the major indexes 
+3. 
+
+
+Process
+1. "What stock do you want to see?"
+2.  *** User inputs stock symbol ***
+3. Splash front page of stock information (i.e. 52 week high,etc,etc)
+4. post splash, show user the input functions
+
+5. Headline page (Nokogiri scrape)
+- Click #5 (example)
+- Show headlines of current new on stock
+- when user clicks a specific # related to stock open on google chrome
+
+6. Back or Menu 
+If back 
+goes back to stock profile page
+If back again || Menu
+goes back to menu page 
+
+else
+
+If Menu 
+goes back to Originl CLI 
+
+
