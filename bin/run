@@ -2,4 +2,4 @@
 # system(chmod +x bin/run)
 require_relative '../config/environment'
 
-StockCLI.new.call
+StockCLI.new.menu

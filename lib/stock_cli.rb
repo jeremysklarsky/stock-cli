@@ -8,11 +8,14 @@ class StockCLI
     puts "Dow: #{index_prices[0][0]}: #{index_prices[0][1]}"
     puts "Nasdaq: #{index_prices[1][0]}: #{index_prices[1][1]}"
     puts "S+P: #{index_prices[2][0]}: #{index_prices[2][1]}"
-
   end
 
-  def call    
-    display_stock_info
+  def menu    
+    puts "Enter a stock ticker symbol or type exit to close the program."
+    input = gets.strip
+    if input.downcase != "exit"
+      display_stock_info(input)
+    end
   end
 
   def index_prices
@@ -28,55 +31,47 @@ class StockCLI
   end
 
 
-  def display_stock_info
-    puts "Enter a stock's ticker symbol."
-    input = gets.strip  
+  def display_stock_info(input)
+    
     scrape = Scraper.new(input)
-
     stock = StockQuote::Stock.quote("#{input}")
-    system("clear")
-    system("cowsay #{input.upcase}")
-    puts "--------------------------------------"
-    puts "Current Price: #{scrape.current_price}"
-    puts "Change: #{stock.change} (#{stock.changein_percent})"  
-    puts "Prev. Close: #{stock.previous_close}. Open: #{stock.open}"
-    puts "Bid: #{stock.bid_realtime}. Ask: #{stock.ask_realtime}"
-    puts "Earnings date: #{scrape.earnings_date}"
-    puts "Day's Range: #{stock.days_range}. Year's Range: #{stock.year_range}"
-    puts "Volume: #{stock.volume.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{','}")}"
-    puts "Market Cap: #{stock.market_capitalization}"
-    puts "P/E Ratio: #{stock.pe_ratio}. Earnings per share: #{stock.earnings_share}"
-    stock.dividend_share != 0.0 ? (puts "Div. and Yield: #{stock.dividend_share} (#{stock.dividend_yield}%)") : (puts "No Dividend")
-    puts "Similiar companies: #{scrape.competition}"
-    puts ""
+    if stock.response_code == 404
 
-    scrape.get_headlines.each.with_index(1) do |article, i|
-      puts "#{i}. #{article[0]}: #{article[2]}"
+      puts "Not a valid Stock."
+      menu
+    else
+      system("clear")
+      system("cowsay #{input.upcase}")
+      puts "--------------------------------------"
+      puts "Current Price: #{scrape.current_price}"
+      puts "Change: #{stock.change} (#{stock.changein_percent})"  
+      puts "Prev. Close: #{stock.previous_close}. Open: #{stock.open}"
+      puts "Bid: #{stock.bid_realtime}. Ask: #{stock.ask_realtime}"
+      puts "Earnings date: #{scrape.earnings_date}"
+      puts "Day's Range: #{stock.days_range}. Year's Range: #{stock.year_range}"
+      puts "Volume: #{stock.volume.to_s.gsub(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{','}")}"
+      puts "Market Cap: #{stock.market_capitalization}"
+      puts "P/E Ratio: #{stock.pe_ratio}. Earnings per share: #{stock.earnings_share}"
+      stock.dividend_share != 0.0 ? (puts "Div. and Yield: #{stock.dividend_share} (#{stock.dividend_yield}%)") : (puts "No Dividend")
+      puts "Similiar companies: #{scrape.competition}"
+      puts ""
+
+      scrape.get_headlines.each.with_index(1) do |article, i|
+        puts "#{i}. #{article[0]}: #{article[2]}"
+      end
+  
+      while true
+        puts "Enter an article's number to view that article or type 'menu' to return to the main menu."
+        input = gets.strip.downcase
+        if input.to_i.between?(1, 10)
+          open_page(scrape.get_headlines[input.to_i-1][1])
+        elsif input == "menu"
+          menu
+        else 
+          puts "Not a valid selection."
+        end
+      end 
     end
-    puts ""
-
-    end_of_stock
-    
-  end
-
-
-  def end_of_stock
-    puts "Enter an article's number to view that article or type 'menu' to return to the main menu."
-  end
-
-    # puts "Enter a number to open an article in your browser."
-    # selection = gets.strip.to_i - 1
-    
-    # open_page(scrape.get_headlines[selection][1])
-
-  def stock_menu(stock)
-    puts "Enter a number to select:"
-    puts "1. View similar companies"
-    puts "2. View headlines about #{stock}"
-    puts "3. View a new stock"
-  end
-
-  def stock_menu_selection
   end
 
   def open_page(url)
