@@ -2,8 +2,7 @@ require 'pry'
 require 'open-uri'
 
 class StockCLI
-
-
+  
   def initialize
     puts "Welcome to Stocks"
     puts "Dow: #{index_prices[0][0]}: #{index_prices[0][1]}"
