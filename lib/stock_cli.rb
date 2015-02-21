@@ -1,6 +1,3 @@
-require 'pry'
-require 'open-uri'
-
 class StockCLI
   
   def initialize
@@ -67,6 +64,8 @@ class StockCLI
           open_page(scrape.get_headlines[input.to_i-1][1])
         elsif input == "menu"
           menu
+        elsif input == "exit"
+          break
         else 
           puts "Not a valid selection."
         end
