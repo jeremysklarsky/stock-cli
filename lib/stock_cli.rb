@@ -31,6 +31,7 @@ class StockCLI
     puts "Enter a stock's ticker symbol."
     input = gets.strip  
     scrape = Scraper.new(input)
+
     stock = StockQuote::Stock.quote("#{input}")
     puts "Current Price: #{scrape.current_price}"
     puts "Change: #{stock.change} (#{stock.changein_percent})"  
@@ -42,7 +43,8 @@ class StockCLI
     puts "Market Cap: #{stock.market_capitalization}"
     puts "P/E Ratio: #{stock.pe_ratio}. Earnings per share: #{stock.earnings_share}"
     stock.dividend_share != 0.0 ? (puts "Div. and Yield: #{stock.dividend_share} (#{stock.dividend_yield}%)") : (puts "No Dividend")
-    
+    puts "Similiar companies: #{scrape.competition}"
+
     scrape.get_headlines.each.with_index(1) do |article, i|
       puts "#{i}. #{article[0]}: #{article[2]}"
     end
