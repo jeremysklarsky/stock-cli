@@ -64,6 +64,7 @@ class StockCLI
           open_page(scrape.get_headlines[input.to_i-1][1])
         elsif input == "menu"
           menu
+          break
         elsif input == "exit"
           break
         else 
