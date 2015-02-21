@@ -7,12 +7,22 @@ class StockCLI
     puts "S+P: #{index_prices[2][0]}: #{index_prices[2][1]}"
   end
 
+
+
   def menu    
-    puts "Enter a stock ticker symbol or type exit to close the program."
+    puts "Enter a stock ticker symbol, type search to lookup a ticker, or type exit to close the program."
     input = gets.strip.downcase
-    if input.downcase != "exit"
+    if input == "search"
+      puts "Enter the name of a company you'd like to lookup."
+      input = gets.strip.downcase
+      Lookup.new
+      Lookup.look_up(input)
+      menu
+      
+    elsif input.downcase != "exit"
       display_stock_info(input)
     end
+    puts "Goodbye!"
   end
 
   def index_prices
@@ -20,18 +30,18 @@ class StockCLI
     indexes = [] 
     html.search("div.module-body.row.tickers li.column").each do |column|
       indexes << [column.search("span.ticker-points").text, 
-                  column.search("span.posData").text.gsub("%", "% ")]
-      
+                  column.search("span.posData").text.gsub("%", "% ")] 
     end
     indexes
     
   end
 
-
   def display_stock_info(input)
     
-    scrape = Scraper.new(input)
-    stock = StockQuote::Stock.quote("#{input}")
+    begin
+      scrape = Scraper.new(input)
+      stock = StockQuote::Stock.quote("#{input}") 
+
     if stock.response_code == 404
 
       puts "Not a valid Stock."
@@ -72,6 +82,11 @@ class StockCLI
         end
       end 
     end
+    rescue
+      puts "Error. Try again."
+      menu
+    end
+    puts "Goodbye!"
   end
 
   def open_page(url)
