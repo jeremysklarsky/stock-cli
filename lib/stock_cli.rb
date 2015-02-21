@@ -6,12 +6,27 @@ class StockCLI
 
   def initialize
     puts "Welcome to Stocks"
+    puts "Dow: #{index_prices[0][0]}: #{index_prices[0][1]}"
+    puts "Nasdaq: #{index_prices[1][0]}: #{index_prices[1][1]}"
+    puts "S+P: #{index_prices[2][0]}: #{index_prices[2][1]}"
   end
 
-  def call
-    
+  def call    
     display_stock_info
   end
+
+  def index_prices
+    html = Nokogiri::HTML(open("http://money.cnn.com/data/markets/"))
+    indexes = [] 
+    html.search("div.module-body.row.tickers li.column").each do |column|
+      indexes << [column.search("span.ticker-points").text, 
+                  column.search("span.posData").text.gsub("%", "% ")]
+      
+    end
+    indexes
+    
+  end
+
 
   def display_stock_info
     puts "Enter a stock's ticker symbol."
@@ -34,12 +49,10 @@ class StockCLI
     scrape.get_headlines.each.with_index(1) do |article, i|
       puts "#{i}. #{article[0]}: #{article[2]}"
     end
-    # binding.pry
 
     puts "Enter a number to open an article in your browser."
     selection = gets.strip.to_i - 1
-    # binding.pry
-    # system(open "#{scrape.get_headlines[selection][1]}")
+    
     open_page(scrape.get_headlines[selection][1])
   end
 
