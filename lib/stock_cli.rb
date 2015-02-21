@@ -1,3 +1,6 @@
+require 'pry'
+require 'open-uri'
+
 class StockCLI
 
 
@@ -25,8 +28,37 @@ class StockCLI
     puts "Market Cap: #{stock.market_capitalization}"
     puts "P/E Ratio: #{stock.pe_ratio}. Earnings per share: #{stock.earnings_share}"
     stock.dividend_share != 0.0 ? (puts "Div. and Yield: #{stock.dividend_share} (#{stock.dividend_yield}%)") : (puts "No Dividend")
-    # puts "Dividend and Yield: #{stock.dividend_share} (#{stock.dividend_yield}%)"
+    
+    # puts "Similar companies: "
+    # # binding.pry
+    # scrape.people_also_viewed
+
+    scrape.get_headlines.each.with_index(1) do |article, i|
+      puts "#{i}. #{article[0]}: #{article[2]}"
+    end
+    # binding.pry
+
+    puts "Enter a number to open an article in your browser."
+    selection = gets.strip.to_i - 1
+    # binding.pry
+    # system(open "#{scrape.get_headlines[selection][1]}")
+    open_page(scrape.get_headlines[selection][1])
   end
 
+ 
+
+  def stock_menu(stock)
+    puts "Enter a number to select:"
+    puts "1. View similar companies"
+    puts "2. View headlines about #{stock}"
+    puts "3. View a new stock"
+  end
+
+  def stock_menu_selection
+  end
+
+  def open_page(url)
+    system("open", url)
+  end
   
 end
