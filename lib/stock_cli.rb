@@ -2,10 +2,14 @@ class StockCLI
   
   def initialize
     system("clear")
+    dollar_sign
+    puts "$ - $ - $ - $ - $ - $ - $ - $ - $ - $"
     puts "Welcome to the Stockvestigator 3000"
     puts "Dow: #{index_prices[0][0]}: #{index_prices[0][1]}"
     puts "Nasdaq: #{index_prices[1][0]}: #{index_prices[1][1]}"
     puts "S+P: #{index_prices[2][0]}: #{index_prices[2][1]}"
+    puts "$ - $ - $ - $ - $ - $ - $ - $ - $ - $"
+    puts ""
   end
 
   def menu    
@@ -47,6 +51,8 @@ class StockCLI
       system("clear")
       system("cowsay #{input.upcase}")
       puts "--------------------------------------"
+      puts "#{scrape.stock_name}:"
+      puts ""
       puts "Current Price: #{scrape.current_price}"
       puts "Change: #{stock.change} (#{stock.changein_percent})"  
       puts "Prev. Close: #{stock.previous_close}. Open: #{stock.open}"

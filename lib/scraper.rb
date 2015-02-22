@@ -4,12 +4,17 @@ class Scraper
 
   def initialize(ticker)
     @ticker = ticker
+    @stock_html = open("http://finance.yahoo.com/q?s=#{@ticker}")
+    @stock_doc = Nokogiri::HTML(@stock_html)  
   end
 
   def current_price
-    @stock_html = open("http://finance.yahoo.com/q?s=#{@ticker}")
-    @stock_doc = Nokogiri::HTML(@stock_html)  
+  
     @stock_doc.search("span.time_rtq_ticker").text    
+  end
+
+  def stock_name
+    @stock_doc.search("div.title h2").text.split(" (")[0]
   end
 
   def earnings_date

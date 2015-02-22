@@ -1,8 +1,7 @@
 class Lookup
 
   def self.look_up(search)
-    term = search.gsub(" ", "")
-    data = Nokogiri::HTML(open("http://www.dailyfinance.com/lookup/#{term}/usa"))
+    data = Nokogiri::HTML(open("http://www.dailyfinance.com/lookup/#{search.gsub(" ", "")}/usa"))
     results =[]
     data.search("table.table tr").each do |result|
       results << result.text.split("\n")
