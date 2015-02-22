@@ -1,13 +1,12 @@
 class StockCLI
   
   def initialize
+    system("clear")
     puts "Welcome to the Stockvestigator 3000"
     puts "Dow: #{index_prices[0][0]}: #{index_prices[0][1]}"
     puts "Nasdaq: #{index_prices[1][0]}: #{index_prices[1][1]}"
     puts "S+P: #{index_prices[2][0]}: #{index_prices[2][1]}"
   end
-
-
 
   def menu    
     puts "Enter a stock ticker symbol, type search to lookup a ticker, or type exit to close the program."
@@ -15,10 +14,9 @@ class StockCLI
     if input == "search"
       puts "Enter the name of a company you'd like to lookup."
       input = gets.strip.downcase
-      Lookup.new
+      system("clear")
       Lookup.look_up(input)
       menu
-      
     elsif input.downcase != "exit"
       display_stock_info(input)
     end
@@ -33,7 +31,6 @@ class StockCLI
                   column.search("span.posData").text.gsub("%", "% ")] 
     end
     indexes
-    
   end
 
   def display_stock_info(input)
