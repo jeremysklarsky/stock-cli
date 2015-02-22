@@ -24,7 +24,6 @@ class StockCLI
     elsif input.downcase != "exit"
       display_stock_info(input)
     end
-    puts "Goodbye!"
   end
 
   def index_prices
@@ -46,6 +45,8 @@ class StockCLI
     if stock.response_code == 404
 
       puts "Not a valid Stock."
+      puts "Did you mean any of the following?"
+      Lookup.look_up(input.capitalize)
       menu
     else
       system("clear")
@@ -89,7 +90,6 @@ class StockCLI
       puts "Error. Try again."
       menu
     end
-    puts "Goodbye!"
   end
 
   def open_page(url)
