@@ -1,6 +1,6 @@
 class Scraper
 
-  attr_accessor :ticker
+  attr_accessor :ticker, :stock_doc
 
   def initialize(ticker)
     @ticker = ticker
@@ -9,33 +9,23 @@ class Scraper
   end
 
   def current_price
-  
-    @stock_doc.search("span.time_rtq_ticker").text    
+    stock_doc.search("span.time_rtq_ticker").text    
   end
 
   def stock_name
-    @stock_doc.search("div.title h2").text.split(" (")[0]
+    stock_doc.search("div.title h2").text.split(" (")[0]
   end
 
   def earnings_date
-    @stock_doc.search("td.yfnc_tabledata1")[6].text
+    stock_doc.search("td.yfnc_tabledata1")[6].text
   end
-
-
 
   def competition
     @competition_html = open("https://finance.yahoo.com/q/co?s=#{@ticker}+Competitors")
     @competition_doc = Nokogiri::HTML(@competition_html)
     result = []
     @competition_doc.search("th.yfnc_tablehead1").collect do |company|
-      case company.text
-      when ""
-        nil
-      when ticker.upcase
-        nil
-      when "Industry"
-        nil
-      else
+      if company.text != "" && company.text != ticker.upcase && company.text != "Industry"
         result << company.text
       end
     end

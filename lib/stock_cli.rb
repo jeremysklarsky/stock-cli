@@ -1,3 +1,4 @@
+require 'pry'
 class StockCLI
   
   def initialize
@@ -18,7 +19,7 @@ class StockCLI
     if input == "search"
       puts "Enter the name of a company you'd like to lookup."
       input = gets.strip.downcase
-      system("clear")
+      puts "Searching for you..."
       Lookup.look_up(input)
       menu
     elsif input.downcase != "exit"
@@ -40,12 +41,11 @@ class StockCLI
     
     begin
       scrape = Scraper.new(input)
-      stock = StockQuote::Stock.quote("#{input}") 
+      stock = StockQuote::Stock.quote("#{input}")
 
     if stock.response_code == 404
-
       puts "Not a valid Stock."
-      puts "Did you mean any of the following?"
+      puts "Searching for you..."
       Lookup.look_up(input.capitalize)
       menu
     else
@@ -87,7 +87,9 @@ class StockCLI
       end 
     end
     rescue
-      puts "Error. Try again."
+      puts "Error. Not a valid stock."
+      puts "Searching for you..."
+      Lookup.look_up(input.capitalize)
       menu
     end
   end
