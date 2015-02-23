@@ -17,7 +17,7 @@ class StockCLI
     puts "Enter a stock ticker symbol, type search to lookup a ticker, or type exit to close the program."
     input = gets.strip.downcase
     if input == "search"
-      puts "Enter the name of a company you'd like to lookup."
+      puts "Enter the name of a company whose ticker you'd like to lookup."
       input = gets.strip.downcase
       puts "Searching for you..."
       Lookup.look_up(input)
