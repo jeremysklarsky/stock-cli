@@ -22,7 +22,7 @@ class StockCLI
       Lookup.look_up(input)
       menu
     elsif input.downcase != "exit"
-      display_stock_info(input)
+      display_stock_info(input.gsub(".", "-"))
     end
   end
 
