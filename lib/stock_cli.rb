@@ -1,4 +1,3 @@
-require 'pry'
 class StockCLI
   
   def initialize
@@ -31,10 +30,15 @@ class StockCLI
     html = Nokogiri::HTML(open("http://money.cnn.com/data/markets/"))
     indexes = [] 
     html.search("div.module-body.row.tickers li.column").each do |column|
+      
       indexes << [column.search("span.ticker-points").text, 
-                  column.search("span.posData").text.gsub("%", "% ")] 
+                  column.search("span.posData").text.gsub("%", "% "),
+                  column.search("span.negData").text.gsub("%", "% ")] 
     end
-    indexes
+    indexes.collect do |index|
+      index.reject! { |e| e.empty? }
+    end
+
   end
 
   def display_stock_info(input)
